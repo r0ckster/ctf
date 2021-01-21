@@ -107,6 +107,7 @@ Command disabled
 ````
 
 Open the page with Firefox: http://10.10.102.120/Sup3rS3cretPickl3Ingred.txt and we have our first flag
+
 ``mr. meeseek hair``
 
 Open the http://10.10.102.120/clue.txt ``Look around the file system for the other ingredient.``
