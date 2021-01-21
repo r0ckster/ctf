@@ -1,6 +1,6 @@
-Difficulty: EASY
+### Difficulty: EASY
 
-Keywords and tools: nmap, nikto, dirb, directory traversal
+### Keywords and tools: nmap, nikto, dirb, directory traversal
 
 
 #ping the target (target IP will be given after you've joined the room)
