@@ -1,13 +1,13 @@
-# Pickle Rick @TryHackMe.com
+## Pickle Rick @TryHackMe.com
 
-### Difficulty: EASY
+## Difficulty: EASY
 
-### Keywords and tools: nmap, nikto, dirb, directory traversal
+## Keywords and tools: nmap, nikto, dirb, directory traversal
 
 
 #ping the target (target IP will be given after you've joined the room)
 
-'ping 10.10.102.120'
+`ping 10.10.102.120`
 
 PING 10.10.102.120 (10.10.102.120) 56(84) bytes of data.
 64 bytes from 10.10.102.120: icmp_seq=1 ttl=63 time=49.4 ms
@@ -15,7 +15,7 @@ PING 10.10.102.120 (10.10.102.120) 56(84) bytes of data.
 
 #nmap scan
 
-sudo nmap -sV -n -v -Pn -p- -T4 -A 10.10.102.120
+`sudo nmap -sV -n -v -Pn -p- -T4 -A 10.10.102.120`
 
 PORT   STATE SERVICE VERSION
 22/tcp open  ssh     OpenSSH 7.2p2 Ubuntu 4ubuntu2.6 (Ubuntu Linux; protocol 2.0)
