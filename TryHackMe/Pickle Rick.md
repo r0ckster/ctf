@@ -1,3 +1,5 @@
+# Pickle Rick @TryHackMe.com
+
 ### Difficulty: EASY
 
 ### Keywords and tools: nmap, nikto, dirb, directory traversal
@@ -5,7 +7,8 @@
 
 #ping the target (target IP will be given after you've joined the room)
 
-'ping 10.10.102.120' 
+'ping 10.10.102.120'
+
 PING 10.10.102.120 (10.10.102.120) 56(84) bytes of data.
 64 bytes from 10.10.102.120: icmp_seq=1 ttl=63 time=49.4 ms
 64 bytes from 10.10.102.120: icmp_seq=2 ttl=63 time=50.7 ms
