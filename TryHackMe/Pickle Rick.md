@@ -132,7 +132,7 @@ Lets see if we have sudo
 sudo ls /root;
 sudo less /root/3rd.txt
 
-3rd ingredients: fleeb juice
+3rd ingredients: ***** ****
 ````
 
 There's the final flag.
