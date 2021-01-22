@@ -204,9 +204,9 @@ root
 # locate root.txt
 /root/root.txt
 # cat /root/root.txt
-THM{80UN7Y_h4cK3r}
+
 ```
-And here we have our final answer. THM{80UN7Y_h4cK3r}
+And here we have our final answer. THM***********}
 
 
 
