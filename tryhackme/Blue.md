@@ -2,7 +2,7 @@
 
 Difficulty: EASY
 
-Keywords and tools: 
+Keywords and tools: nmap, metasploit, meterpreter, eternalblue, jtr
 
 ### Check that host is alive
 ```                                                                            
