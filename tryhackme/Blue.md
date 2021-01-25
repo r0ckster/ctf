@@ -70,7 +70,8 @@ Host script results:
 |_  start_date: 2021-01-25T08:13:09
 
 
-nmap --script vuln <target_ip>
+
+$nmap --script vuln <target_ip>
 
 Host script results:
 |_samba-vuln-cve-2012-1182: NT_STATUS_ACCESS_DENIED
