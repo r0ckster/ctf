@@ -2,7 +2,7 @@
 
 Difficulty: MEDIUM
 
-Keywords and tools: 
+Keywords and tools: nmap, dirb, john the ripper, web shell, netcat
 
 ### Check that host is alive
 ```                                                                            
