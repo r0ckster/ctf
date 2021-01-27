@@ -1,0 +1,53 @@
+Recon
+
+Use fping and/or nmap to discovere alive hosts.
+
+fping
+
+	fping -a -g IPRANGE/CIDR
+		-a shows alive hosts
+		-g tells to sweep instead of ping
+		-'2>/dev/null' to supress "unreachable" messages
+    
+	examples
+		fping -a -g 192.168.1.0/24 2>/dev/null
+			
+
+
+
+nmap
+	
+	Discovery
+		
+		ping scan:                            $nmap -sn 192.168.1*
+		if you have a file containing hosts:  $nmap -sn -iL <file>
+	
+	
+	OS fingerprint
+  
+		$nmap -Pn -O <targets>
+			-O        is for OS fingerprint
+			-Pn       is for skipping ping scan if you know target is alive
+			--osscan-limit  limit detection to promising targets
+			--osscan-guess  guess OS more aggressively
+
+
+	Portscan
+	
+		$nmap -sS -sV -O --osscan-limit 192.168.1.0/24
+			-sT for TCP connect scan (will be recored in application logs)
+			-sS for SYN scan (stealth scan but well config IDS will detect this)
+			-sV for version detection scan (not stealthy but useful)
+		
+		To specify ports
+			$ -p X-X
+			$ -p X,Y,Z
+			
+			
+	General scan
+		
+		$nmap -sV -n -v -Pn -p- -T4 -A <target>
+			-n	never do DNS resolution
+			-p-	port scan all ports
+			-T4	fast scan (can be between T0-T5)
+			-A	OS/version detection, script scanning, traceroute
