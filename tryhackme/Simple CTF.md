@@ -2,10 +2,6 @@
 
 Difficulty: EASY
 
-Keywords and tools: 
-
-Questions:
-
 ### nmap scan
 ```
 $ nmap -sV -n -v -Pn -p- -T4 -A 10.10.211.172
