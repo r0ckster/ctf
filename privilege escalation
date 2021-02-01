@@ -5,6 +5,16 @@ List of Unix binaries that can used to bypass local security restrictions in mis
 https://www.exploit-db.com/
 Search for exploits.
 
+  Check system information (if old kernel for example)
+  $uname -a
+  $lsb_release
+  
+  Check HW info
+  $sudo lshw (-short)
+
+  Check block device info
+  $lsblk
+
 
 List the allowed (and forbidden) commands
 $sudo -l	
