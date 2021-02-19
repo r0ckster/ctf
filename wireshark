@@ -1,0 +1,159 @@
+Wireshark interface
+	
+	- Promiscuous mode, important for LAN, basically MITM, dangerous.
+	- You can make profiles to do different things
+	
+Protocol filters
+	- udp.port==53 - now you will spoof only DNS requests
+	- you can use OR or || to link filters, && is and
+	- ICMP = ping
+	- if pinging google.com works, then problem is most likely with the browser or firewall
+	
+IP and port filtering
+	- src = source
+	- dst = destionation
+	- ip.src == IPADDRESS, will display all the packages from specific source
+	- tcp.srcport == PORT, all tcp  traffic from specific port
+	- ip.addr == 10.0.2.4 && ( tcp.port == 53 || udp.port == 53) , will display all DNS traffic, DNS mostly uses UDP but sometimes TCP. Good way to filter if you don't know if X uses tcp or udp.
+
+HTTP packet analysis
+	- filter with HTTP > select one packet > open Ethernet 2 > you can see destination and source IP (your router)
+	- IPV4 (unher Ethernet 2) shows source and destination, but this time IP of the page you visited
+	- Transmission Control Protocol, shows source and destination port
+	- Hypertext Transfer Protocol > GET, shows host you connected, your user-agent, accepted languages etc..
+
+How credentials can be stolen over insecure networks
+	- capture HTTP traffic with log in, filter traffic with 'http' > select package with GET > go to Hypertext Transfer Protocol > Authorization, this shows the credentials user has typed
+	- useful with MITM and SSLStrip
+	- try filtering with  "http.request.method == "POST"", this will show what user has sent to web
+
+
+Wireshark and Linux firewall interaction
+	- filter with 'icmp' > do a ping > you get requests and replies
+	- turn off ping so you can request ping but will not reply:  iptable -I OUTPUT -p icmp -j DROP
+
+How to detect unauthorized traffic
+	- for example you see lot's of SSH traffic, close every application you have running and
+		- you can check the destination IP (where it's connecting, might be useful or not: hacker would use proxy/VPN)
+		- check what port it's using and filter by it (tcp.port == 22), ofc it's encrypted
+		- use command "lsog -i :22"
+			- see what process ID is using the port > you can then kill it with "kill ID"
+		
+		
+Wireshark command line interface (CLI)
+
+	- Help
+		#tsarhk --help
+	- list interfaces
+		#tshark -D
+	- start live capture (not saving)
+		#tshark -i INTERFACE -i INTERFACE2 -i INTERFACE3
+	- save capture to a file, so you can analyze it later or with GUI Wireshark (if you're root, save to /tmp/ folder)
+		# tshark -i INTERFACE -w FILE_LOCATION/test.pcap
+	- capture for X seconds
+		# tshark -i INTERFACE -a duration:60 -w FILE_LOCATION/test.pcap
+	- split capture specific ports and adjust duration + file count
+		# tshark -i eth0 -f "port 80 or port 443 or port 53" -b filesize:53 -a files:3 -w /tmp/UPDATE.pcap
+	
+	
+	- Display and capture filters (open quote and hit enter, easier to follow than having command on 1 line, remember to close quotes"
+		# tshark -i eth0 -f " *HIT ENTER*
+			> port 80
+			> or
+			> port 443"
+	- Link many interfaces
+		# tshark -i eth0 -f " *HIT ENTER*
+			> port 80
+			> or
+			> port 443" -i wlan0 -f "
+			> port 53"
+	- Field seperation (this will print all IP's in captured file
+		# tshark -r /tmp/testi1.pcap -T fields -e ip
+	- Print list of source IP's
+		# tshark -r /tmp/testi1.pcap -T fields -e dns -e  ip.src | uniq
+	
+	
+	- Networkcard modes
+		- promiscuous mode captures traffic only intented to you
+		- "monitor mode" can capture all the data you can listen (wifi)
+		- "master mode" will act as Access Point
+		- "ad hoc" peer-to-peer
+		- "mash" internote communication, 3 devices: A communicates with B through C...
+		- "repeater mode" all the packages it receives, it repeats them.. like wifi repeaters/extenders
+	
+	
+	- Capture remote traffic
+		- set monitor more on for wifi
+			- # airmon-ng check wlan0
+				- see if you need to kill some conflicting processess (# kill PID)
+		- start capturing traffic with airodump-ng
+			- # airodump-ng wlan0 --channel 11 --bssid 4C:9E:FF:F8:39:00 --write out
+		- it will save cap, csv and some other files
+		- open cap file in wireshark
+			# wireshark out-01.cap
+		- ofc if it's WPA, it's encrypted and you need to get the PW/decryption keys
+	
+	- Decrypting wireless traffic
+		- open the captured file > File > Preferences > Protocols > search IEE 802.11
+		- Enable decryption > Edit and Add "wpa-pwd" or what ever was used
+		- to KEY field: "password:WLANname" > OK
+		
+		
+	- Formatting output to a CSV file
+		- # tshark -r sampleCapture_1.pcap -T fields -e frame.number -e ip.src -e ip.dst -e tcp.dstport -E header=y -E separator=, -E quote=d -E occurrence=f > sampleCSV.csv
+		- can be opened with Excel or LibreOffice...
+		
+		
+Exporting packet contents
+	- capture some stream/video
+	- filter with "ip.addr == IP && http
+	- right click f.e. video stream packet > Export selected packet bytes > save > play
+	
+	
+Wireshark and nmap 
+	- use the following filter to capture nmap scan for specific target
+		- ip.src == YOUR_IP && ip.dst == TARGET_IP
+	- start nmap scan
+	
+		# nmap TARGET_IP -vv
+		- this will generate lots of packages and will be noticed
+			Nmap done: 1 IP address (1 host up) scanned in 10.41 seconds
+            Raw packets sent: 2006 (88.248KB) | Rcvd: 8 (336B)
+		
+		# nmap -O TARGET_IP -vv
+		- still too much traffic
+			Nmap done: 1 IP address (1 host up) scanned in 24.24 seconds
+			Raw packets sent: 3109 (142.012KB) | Rcvd: 40 (2.040KB)
+
+		# nmap -Pn TARGET_IP -vv
+		- still too much
+		
+		# nmap -p 80 TARGET_IP -vv
+		- scanning only 1 port will generate only few packets
+		- focus on specific services/ports, much more stealthier
+	
+	
+
+SSH tunneling to Wireshark, so you can do capture remotely
+	- config sshd.config on the remote machine
+		# cd /etc/ssh/
+		# nano sshd_config
+		- add "PermitRootLogin yes" > save > exit
+		# service sshd restard	OR # service sshd start
+		- install tcpdump if needed 	
+	
+	- create a pipe file in TMP
+		# cd /tmp/
+		# mkfifo packet_capture
+		# chmod 777 packet_capture (to give global permissions, this is dangerous, google for safer)
+		
+	- issue this command on remote machine
+		# tcpdump -i INTERFACE -w - | ssh USERNAME@IP_ADDRESS_OR_HOSTNAME -c arcfour,blowfish-cbc -C -p PORT "cat - > /tmp/packet_capture"
+			- tcpdump and parameters to it: interface, write output
+			- |: use ssh protocol, who you want to be on remote machine somewhere
+			- -c specify ciphers for SSH
+			- -C compress all information
+			- -p configure port
+			- "write the tcpdump somewhere"
+		- open Wireshark on your machine > Capture > Options > Manage Interfaces > Pipes > New > Browse to you "pipe file" > save/close > select this interface and start the capture
+		- now you get the data of remote machine, can decrypt with SSH key
