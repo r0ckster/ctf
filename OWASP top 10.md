@@ -80,4 +80,15 @@ Mitigate
 
 
 ## 3. Sensitive Data Exposure
+* data directly linked to customer, usernames, passwords
+* can be accidental leak or MITM
+
+## 4. XML Ecternal Entity
+* XXE
+* abuses features of XML parsers or data
+* allows to interact with any backend or external systemss that the app itself can access
+* can also cause DoS or Server-Side Request Forgery (SSRF)
+* may also enable port scanning and lead to RCE
+* in-band XXE = receive an immediate response to the XXE payload
+* out-of-band XXE (OOB-XXE / blind XXE) = no immediate response from we app, have to reflect the output to some other file on their own server
 
